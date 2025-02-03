@@ -1,3 +1,6 @@
+-- Criação da base de dados:
+CREATE DATABASE sistema_votacao;
+
 -- Criação da tabela de Eleitores
 CREATE TABLE eleitores (
     id_eleitor SERIAL PRIMARY KEY,
@@ -33,7 +36,8 @@ CREATE TABLE votos (
     data_hora_voto TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (id_votacao) REFERENCES votacoes(id_votacao) ON DELETE CASCADE,
     FOREIGN KEY (id_opcao_voto) REFERENCES opcoes_voto(id_opcao_voto) ON DELETE CASCADE,
-    FOREIGN KEY (id_eleitor) REFERENCES eleitores(id_eleitor) ON DELETE CASCADE
+    FOREIGN KEY (id_eleitor) REFERENCES eleitores(id_eleitor) ON DELETE CASCADE,
+    -- UNIQUE (id_votacao, id_eleitor) -- Garante que o eleitor vote apenas uma vez por votação
 );
 
 -- Criação da tabela de Administradores
@@ -110,7 +114,17 @@ EXECUTE FUNCTION validar_voto();
 
 -- Inserção de dados de exemplo
 INSERT INTO administradores (nome_admin, email_admin, senha_admin) 
-VALUES ('Admin Padrão', 'admin@sistema.com', 'senha_hash_aqui');
+VALUES ('Admin Padrão', 'admin@sistema.com', 'senhaHashAqui');
+
+INSERT INTO votacoes (nome_votacao, descricao_votacao, data_inicio_votacao, data_fim_votacao)
+VALUES 
+    ('Eleição de Representante', 'Escolha do representante da turma.', '2025-02-01 08:00:00', '2025-02-01 18:00:00');
+
+INSERT INTO opcoes_voto (id_votacao, descricao_opcao_voto)
+VALUES 
+    (1, 'Candidato 1'),
+    (1, 'Candidato 2'),
+    (1, 'Candidato 3');
 
 -- Comentários nas tabelas
 COMMENT ON TABLE eleitores IS 'Tabela que armazena informações dos eleitores do sistema';
