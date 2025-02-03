@@ -1,4 +1,4 @@
-# sistema-votacao-distribuido
+# Sistema de Votacao Distribuido
 Esse repositório é destinado a armazenar os códigos do sistema de votação distribuído desenvolvido na disciplina de 'Sistemas Distribuídos', ministrada pelo professor Rennan José Maia.
 
 ## Para executar o projeto:
