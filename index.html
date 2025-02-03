@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Votação</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .voting-card {
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+        .voting-card:hover {
+            transform: translateY(-5px);
+        }
+        .option-card {
+            cursor: pointer;
+            border: 2px solid #dee2e6;
+        }
+        .option-card.selected {
+            border-color: #0d6efd;
+            background-color: #f8f9fa;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="#">Sistema de Votação</a>
+        </div>
+    </nav>
+
+    <div class="container my-5">
+        <!-- Login do Eleitor -->
+        <div id="loginSection" class="mb-5">
+            <h2 class="mb-4">Identificação do Eleitor</h2>
+            <form id="loginForm" class="col-md-6">
+                <div class="mb-3">
+                    <label for="emailEleitor" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="emailEleitor" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Entrar</button>
+            </form>
+        </div>
+
+        <!-- Seção de Votação (inicialmente oculta) -->
+        <div id="votingSection" style="display: none;">
+            <h2 id="votingTitle" class="mb-4"></h2>
+            <p id="votingDescription" class="mb-4"></p>
+            
+            <div class="row" id="optionsContainer">
+                <!-- As opções de voto serão inseridas aqui dinamicamente -->
+            </div>
+
+            <button id="submitVote" class="btn btn-primary mt-4" style="display: none;">
+                Confirmar Voto
+            </button>
+        </div>
+
+        <!-- Modal de Confirmação -->
+        <div class="modal fade" id="confirmationModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Confirmar Voto</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Você tem certeza que deseja votar na opção selecionada?</p>
+                        <p><strong>Opção escolhida: </strong><span id="selectedOptionText"></span></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-primary" id="confirmVoteBtn">Confirmar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        let currentVotacao = null;
+        let selectedOption = null;
+        let currentEleitor = null;
+        const confirmationModal = new bootstrap.Modal(document.getElementById('confirmationModal'));
+
+        // Simulated API endpoints (to be replaced with actual API calls)
+        const API_URL = 'http://your-api-url';
+
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('emailEleitor').value;
+            
+            try {
+                // In real implementation, this would be an API call
+                const response = await fetch(`${API_URL}/eleitores?email=${email}`);
+                const eleitor = await response.json();
+                
+                if (eleitor) {
+                    currentEleitor = eleitor;
+                    document.getElementById('loginSection').style.display = 'none';
+                    document.getElementById('votingSection').style.display = 'block';
+                    loadActiveVotacao();
+                }
+            } catch (error) {
+                alert('Erro ao fazer login. Tente novamente.');
+            }
+        });
+
+        async function loadActiveVotacao() {
+            try {
+                // In real implementation, this would be an API call
+                const response = await fetch(`${API_URL}/votacoes/active`);
+                const votacao = await response.json();
+                
+                if (votacao) {
+                    currentVotacao = votacao;
+                    displayVotacao(votacao);
+                }
+            } catch (error) {
+                alert('Erro ao carregar votação ativa.');
+            }
+        }
+
+        function displayVotacao(votacao) {
+            document.getElementById('votingTitle').textContent = votacao.nome_votacao;
+            document.getElementById('votingDescription').textContent = votacao.descricao_votacao;
+            
+            const optionsContainer = document.getElementById('optionsContainer');
+            optionsContainer.innerHTML = '';
+            
+            votacao.opcoes.forEach(opcao => {
+                const optionCard = document.createElement('div');
+                optionCard.className = 'col-md-4 mb-4';
+                optionCard.innerHTML = `
+                    <div class="card option-card h-100" data-option-id="${opcao.id_opcao_voto}">
+                        <div class="card-body">
+                            <h5 class="card-title">${opcao.descricao_opcao_voto}</h5>
+                        </div>
+                    </div>
+                `;
+                optionsContainer.appendChild(optionCard);
+                
+                optionCard.addEventListener('click', () => selectOption(opcao));
+            });
+        }
+
+        function selectOption(opcao) {
+            const cards = document.querySelectorAll('.option-card');
+            cards.forEach(card => card.classList.remove('selected'));
+            
+            const selectedCard = document.querySelector(`[data-option-id="${opcao.id_opcao_voto}"]`);
+            selectedCard.classList.add('selected');
+            
+            selectedOption = opcao;
+            document.getElementById('submitVote').style.display = 'block';
+            document.getElementById('selectedOptionText').textContent = opcao.descricao_opcao_voto;
+        }
+
+        document.getElementById('submitVote').addEventListener('click', () => {
+            if (selectedOption) {
+                confirmationModal.show();
+            }
+        });
+
+        document.getElementById('confirmVoteBtn').addEventListener('click', async () => {
+            try {
+                // In real implementation, this would be an API call
+                const response = await fetch(`${API_URL}/votos`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        id_votacao: currentVotacao.id_votacao,
+                        id_opcao_voto: selectedOption.id_opcao_voto,
+                        id_eleitor: currentEleitor.id_eleitor,
+                        data_hora_voto: new Date().toISOString()
+                    })
+                });
+                
+                if (response.ok) {
+                    confirmationModal.hide();
+                    alert('Voto registrado com sucesso!');
+                    window.location.reload();
+                }
+            } catch (error) {
+                alert('Erro ao registrar voto. Tente novamente.');
+            }
+        });
+    </script>
+</body>
+</html>
