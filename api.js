@@ -1,7 +1,4 @@
-Vou criar uma API RESTful estruturada usando Node.js, seguindo boas práticas de organização e distribuição de responsabilidades.
-
-
-```javascript
+javascript
 // src/config/database.js
 const { Pool } = require('pg');
 
@@ -316,63 +313,3 @@ app.listen(PORT, () => {
 // .env
 PORT=3000
 JWT_SECRET=your_jwt_secret_here
-
-```
-
-A API foi estruturada seguindo o padrão MVC e princípios REST. Aqui está a explicação da organização:
-
-1. **Configuração**
-   - `config/database.js`: Configuração da conexão com PostgreSQL
-
-2. **Middlewares**
-   - `auth.middleware.js`: Autenticação via JWT
-   - `admin.middleware.js`: Verificação de permissões de administrador
-
-3. **Controllers**
-   - `eleitor.controller.js`: Gerencia eleitores (login/registro)
-   - `admin.controller.js`: Gerencia administradores (login)
-   - `votacao.controller.js`: Gerencia votações (criar/listar/resultados)
-   - `voto.controller.js`: Gerencia votos (registrar)
-
-4. **Rotas**
-   - `eleitor.routes.js`: Rotas para eleitores
-   - `admin.routes.js`: Rotas para administradores
-   - `votacao.routes.js`: Rotas para votações
-   - `voto.routes.js`: Rotas para votos
-
-5. **Aplicação**
-   - `app.js`: Configuração do Express e rotas
-   - `server.js`: Inicialização do servidor
-
-Endpoints disponíveis:
-
-1. **Eleitores**
-   - POST `/api/eleitores/login`: Login do eleitor
-   - POST `/api/eleitores/register`: Registro de novo eleitor
-
-2. **Administradores**
-   - POST `/api/admin/login`: Login do administrador
-
-3. **Votações**
-   - POST `/api/votacoes`: Criar nova votação (admin)
-   - GET `/api/votacoes/active`: Listar votações ativas
-   - GET `/api/votacoes/:id_votacao/results`: Ver resultados (admin)
-
-4. **Votos**
-   - POST `/api/votos`: Registrar voto
-
-Para executar o projeto:
-
-1. Instale as dependências:
-```bash
-npm install express pg bcrypt jsonwebtoken cors dotenv
-```
-
-2. Configure o arquivo `.env` com suas credenciais
-
-3. Inicie o servidor:
-```bash
-node src/server.js
-```
-
-Precisa de algum esclarecimento sobre alguma parte específica da API ou gostaria de ver alguma funcionalidade adicional?
