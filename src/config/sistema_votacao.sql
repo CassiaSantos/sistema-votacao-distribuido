@@ -36,8 +36,7 @@ CREATE TABLE votos (
     data_hora_voto TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (id_votacao) REFERENCES votacoes(id_votacao) ON DELETE CASCADE,
     FOREIGN KEY (id_opcao_voto) REFERENCES opcoes_voto(id_opcao_voto) ON DELETE CASCADE,
-    FOREIGN KEY (id_eleitor) REFERENCES eleitores(id_eleitor) ON DELETE CASCADE,
-    -- UNIQUE (id_votacao, id_eleitor) -- Garante que o eleitor vote apenas uma vez por votação
+    FOREIGN KEY (id_eleitor) REFERENCES eleitores(id_eleitor) ON DELETE CASCADE
 );
 
 -- Criação da tabela de Administradores
