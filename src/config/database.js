@@ -17,18 +17,18 @@ pool.connect((err, client, release) => {
   console.log('Conectado com sucesso ao banco de dados');
 });
 
-// Função helper para executar queries
-const query = async (text, params) => {
+// Helper function para executar queries
+const executeQuery = async (text, params = []) => {
+  const client = await pool.connect();
   try {
-      const result = await pool.query(text, params);
+      const result = await client.query(text, params);
       return result;
   } catch (error) {
-      console.error('Erro ao executar query:', error.stack);
+      console.error('Database Error:', error);
       throw error;
+  } finally {
+      client.release();
   }
 };
 
-module.exports = {
-  pool,
-  query
-};
+module.exports = { pool, executeQuery };

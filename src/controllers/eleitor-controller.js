@@ -1,14 +1,13 @@
 // src/controllers/eleitor.controller.js
-const pool = require('../config/database');
-const bcrypt = require('bcrypt');
+const { executeQuery } = require('../config/database');
 const jwt = require('jsonwebtoken');
 
 class EleitorController {
   async login(req, res) {
     const { email } = req.body;
-    
+        
     try {
-      const result = await pool.query(
+      const result = await executeQuery(
         'SELECT * FROM eleitores WHERE email_eleitor = $1',
         [email]
       );
@@ -25,7 +24,9 @@ class EleitorController {
       );
 
       return res.json({ token, eleitor });
+
     } catch (error) {
+      console.error('Login Error:', error);
       return res.status(500).json({ error: 'Erro ao realizar login' });
     }
   }
@@ -34,13 +35,13 @@ class EleitorController {
     const { nome, email } = req.body;
 
     try {
-      const result = await pool.query(
+      const result = await executeQuery(
         'INSERT INTO eleitores (nome_eleitor, email_eleitor) VALUES ($1, $2) RETURNING *',
         [nome, email]
       );
-
       return res.status(201).json(result.rows[0]);
     } catch (error) {
+      console.error('Register Error:', error);
       return res.status(500).json({ error: 'Erro ao registrar eleitor' });
     }
   }

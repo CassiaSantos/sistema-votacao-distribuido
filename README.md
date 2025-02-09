@@ -8,7 +8,10 @@ Esse repositório é destinado a armazenar os códigos do sistema de votação d
 npm install express pg bcrypt jsonwebtoken cors dotenv
 ```
 
-2. Configure o arquivo `.env` com suas credenciais
+2. Configure o arquivo `.env` com suas credenciais e instale:
+```bash
+npm install dotenv pg
+```
 
 3. Inicie o servidor:
 ```bash
