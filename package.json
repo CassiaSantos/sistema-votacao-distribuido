@@ -2,6 +2,18 @@
   "dependencies": {
     "dotenv": "^16.4.7",
     "jsonwebtoken": "^9.0.2",
+    "nodemon": "^3.1.9",
     "pg": "^8.13.1"
-  }
+  },
+  "name": "sistema-votacao-distribuido",
+  "version": "1.0.0",
+  "description": "Esse repositório é destinado a armazenar os códigos do sistema de votação distribuído desenvolvido na disciplina de 'Sistemas Distribuídos', ministrada pelo professor Rennan José Maia.",
+  "main": "api.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }
