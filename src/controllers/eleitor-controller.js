@@ -1,4 +1,4 @@
-// src/controllers/eleitor.controller.js
+// src/controllers/eleitor-controller.js
 const { executeQuery } = require('../config/database');
 const jwt = require('jsonwebtoken');
 
