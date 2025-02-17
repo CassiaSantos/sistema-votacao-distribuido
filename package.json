@@ -16,5 +16,6 @@
   },
   "devDependencies": {
     "supabase": "^2.12.1"
-  }
+  },
+  "keywords": []
 }
