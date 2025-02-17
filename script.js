@@ -1,29 +1,42 @@
 const API_URL = "http://localhost:3000";
 
+// Função para formatar data e hora
+function formatarDataHora(dataHora) {
+  const data = new Date(dataHora);
+  return data.toLocaleString("pt-BR", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit"
+  });
+}
+
 // Função para carregar as votações existentes
 async function carregarVotacoes() {
-    const response = await fetch(`${API_URL}/votacoes`);
-    const votacoes = await response.json();
+  const response = await fetch(`${API_URL}/votacoes`);
+  const votacoes = await response.json();
 
-    const lista = document.getElementById("lista-votacoes");
-    lista.innerHTML = "";
+  const lista = document.getElementById("lista-votacoes");
+  lista.innerHTML = "";
 
-    votacoes.forEach(votacao => {
-        const item = document.createElement("li");
-        item.classList.add("list-group-item");
-        item.innerHTML = `
-            <strong>${votacao.nome_votacao}</strong> - ${votacao.descricao_votacao} 
-            <br> Início: ${votacao.data_inicio_votacao.split("T")[0]} | Fim: ${votacao.data_fim_votacao.split("T")[0]}
-            <br>
-            <button onclick="editarVotacao(${votacao.id_votacao})" class="btn btn-warning btn-sm">✏️ Editar</button>
-            <button onclick="deletarVotacao(${votacao.id_votacao})" class="btn btn-danger btn-sm">🗑️ Deletar</button>
-        `;
-        lista.appendChild(item);
-    });
+  votacoes.forEach(votacao => {
+      const item = document.createElement("li");
+      item.classList.add("list-group-item");
+      item.innerHTML = `
+          <strong>${votacao.nome_votacao}</strong> - ${votacao.descricao_votacao} 
+          <br> 📅 Início: ${formatarDataHora(votacao.data_inicio_votacao)}
+          <br> ⏳ Fim: ${formatarDataHora(votacao.data_fim_votacao)}
+          <br>
+          <button onclick="editarVotacao(${votacao.id_votacao})" class="btn btn-warning btn-sm">✏️ Editar</button>
+          <button onclick="deletarVotacao(${votacao.id_votacao})" class="btn btn-danger btn-sm">🗑️ Deletar</button>
+      `;
+      lista.appendChild(item);
+  });
 }
 
 async function salvarVotacao() {
-  const id_votacao = document.getElementById("id_votacao").value; // Verifica se há um ID
+  const id_votacao = document.getElementById("id_votacao").value;
   const nome_votacao = document.getElementById("nome_votacao").value;
   const descricao_votacao = document.getElementById("descricao_votacao").value;
   const data_inicio_votacao = document.getElementById("data_inicio_votacao").value;
@@ -34,13 +47,18 @@ async function salvarVotacao() {
       return;
   }
 
-  let metodo = "POST"; // Padrão: Criar nova votação
-  let url = `${API_URL}/votacoes`;
+  // Converter para objetos Date
+  const inicio = new Date(data_inicio_votacao);
+  const fim = new Date(data_fim_votacao);
 
-  if (id_votacao) {
-      metodo = "PUT"; // Se há ID, significa que estamos editando
-      url = `${API_URL}/votacoes/${id_votacao}`;
+  // Verificar se a data de início é menor ou igual à data de fim
+  if (inicio > fim) {
+      alert("A data e hora de início devem ser menores que a data e hora de encerramento!");
+      return;
   }
+
+  let metodo = id_votacao ? "PUT" : "POST";
+  let url = id_votacao ? `${API_URL}/votacoes/${id_votacao}` : `${API_URL}/votacoes`;
 
   const response = await fetch(url, {
       method: metodo,

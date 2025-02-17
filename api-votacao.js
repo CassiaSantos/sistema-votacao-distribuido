@@ -13,17 +13,27 @@ app.use(express.json());
 //libera o uso da API pelo Front-end:
 app.use(cors());
 
-// Criar uma nova votação
-app.post('/votacoes', async (req, res) => {
-    const { nome_votacao, descricao_votacao, data_inicio_votacao, data_fim_votacao } = req.body;
-    
-    const { data, error } = await supabase
-        .from('votacoes')
-        .insert([{ nome_votacao, descricao_votacao, data_inicio_votacao, data_fim_votacao }])
-        .select();
 
-    if (error) return res.status(400).json({ error: error.message });
-    res.status(201).json(data[0]);
+// Criar uma votação
+app.post('/votacoes', async (req, res) => {
+  const { nome_votacao, descricao_votacao, data_inicio_votacao, data_fim_votacao } = req.body;
+
+  // Converter para objetos Date
+  const inicio = new Date(data_inicio_votacao);
+  const fim = new Date(data_fim_votacao);
+
+  // Validar se a data de início é menor que a data de fim
+  if (inicio >= fim) {
+      return res.status(400).json({ error: "A data de início deve ser menor que a data de encerramento!" });
+  }
+
+  const { data, error } = await supabase
+      .from('votacoes')
+      .insert([{ nome_votacao, descricao_votacao, data_inicio_votacao, data_fim_votacao }])
+      .select();
+
+  if (error) return res.status(400).json({ error: error.message });
+  res.status(201).json(data[0]);
 });
 
 // Listar todas as votações
