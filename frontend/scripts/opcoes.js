@@ -5,33 +5,32 @@ const urlParams = new URLSearchParams(window.location.search);
 const id_votacao = urlParams.get("id_votacao");
 document.getElementById("id_votacao").value = id_votacao;
 
-// Função para cadastrar uma nova opção de voto
-async function cadastrarOpcao() {
+// Função para salvar uma opção de voto (criar ou atualizar)
+async function salvarOpcao() {
     const descricao_opcao_voto = document.getElementById("descricao_opcao_voto").value;
-    const id_votacao = document.getElementById("id_votacao").value; // Garante que o ID seja capturado
+    const id_opcao_voto = document.getElementById("id_opcao_voto").value; // Se estiver preenchido, é edição
 
     if (!descricao_opcao_voto) {
         alert("Preencha a descrição da opção de voto!");
         return;
     }
 
-    try {
-        const response = await fetch(`${API_URL}/opcoes`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ id_votacao, descricao_opcao_voto })
-        });
+    let metodo = id_opcao_voto ? "PUT" : "POST";
+    let url = id_opcao_voto ? `${API_URL}/opcoes/${id_opcao_voto}` : `${API_URL}/opcoes`;
 
-        if (!response.ok) {
-            const errorData = await response.text();
-            throw new Error(`Erro: ${response.status} - ${errorData}`);
-        }
+    const response = await fetch(url, {
+        method: metodo,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id_votacao, descricao_opcao_voto })
+    });
 
-        alert("Opção de voto cadastrada com sucesso!");
+    if (response.ok) {
+        alert(id_opcao_voto ? "Opção de voto atualizada com sucesso!" : "Opção de voto cadastrada com sucesso!");
+        limparFormulario();
         carregarOpcoes();
-    } catch (error) {
-        console.error("Erro ao cadastrar opção de voto:", error);
-        alert("Erro ao cadastrar opção de voto! Verifique o console para mais detalhes.");
+    } else {
+        const error = await response.json();
+        alert("Erro ao salvar opção de voto: " + error.error);
     }
 }
 
@@ -46,9 +45,42 @@ async function carregarOpcoes() {
     opcoes.forEach(opcao => {
         const item = document.createElement("li");
         item.classList.add("list-group-item");
-        item.textContent = opcao.descricao_opcao_voto;
+        item.innerHTML = `
+            ${opcao.descricao_opcao_voto}
+            <button onclick="editarOpcao(${opcao.id_opcao_voto}, '${opcao.descricao_opcao_voto}')" class="btn btn-warning btn-sm mx-2">✏️ Editar</button>
+            <button onclick="deletarOpcao(${opcao.id_opcao_voto})" class="btn btn-danger btn-sm">🗑️ Deletar</button>
+        `;
         lista.appendChild(item);
     });
+}
+
+// Função para carregar os dados da opção no formulário para edição
+function editarOpcao(id_opcao_voto, descricao) {
+    document.getElementById("id_opcao_voto").value = id_opcao_voto;
+    document.getElementById("descricao_opcao_voto").value = descricao;
+    document.getElementById("botao-salvar").textContent = "Salvar Alterações";
+}
+
+// Função para deletar uma opção de voto
+async function deletarOpcao(id_opcao_voto) {
+    if (!confirm("Tem certeza que deseja deletar esta opção de voto?")) return;
+
+    const response = await fetch(`${API_URL}/opcoes/${id_opcao_voto}`, { method: "DELETE" });
+
+    if (response.ok) {
+        alert("Opção de voto deletada com sucesso!");
+        carregarOpcoes();
+    } else {
+        const error = await response.json();
+        alert("Erro ao deletar opção de voto: " + error.error);
+    }
+}
+
+// Função para limpar o formulário
+function limparFormulario() {
+    document.getElementById("id_opcao_voto").value = "";
+    document.getElementById("descricao_opcao_voto").value = "";
+    document.getElementById("botao-salvar").textContent = "Adicionar Opção";
 }
 
 // Carregar opções ao carregar a página

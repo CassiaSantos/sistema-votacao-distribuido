@@ -24,3 +24,30 @@ exports.listarOpcoes = async (req, res) => {
     if (error) return res.status(400).json({ error: error.message });
     res.json(data);
 };
+
+// Atualizar uma opção de voto
+exports.atualizarOpcao = async (req, res) => {
+    const { id_opcao_voto } = req.params;
+    const { descricao_opcao_voto } = req.body;
+
+    const { data, error } = await supabase
+        .from('opcoes_voto')
+        .update({ descricao_opcao_voto })
+        .eq('id_opcao_voto', id_opcao_voto);
+
+    if (error) return res.status(400).json({ error: error.message });
+    res.json(data);
+};
+
+// Deletar uma opção de voto
+exports.deletarOpcao = async (req, res) => {
+    const { id_opcao_voto } = req.params;
+
+    const { error } = await supabase
+        .from('opcoes_voto')
+        .delete()
+        .eq('id_opcao_voto', id_opcao_voto);
+
+    if (error) return res.status(400).json({ error: error.message });
+    res.json({ message: "Opção de voto deletada com sucesso!" });
+};
