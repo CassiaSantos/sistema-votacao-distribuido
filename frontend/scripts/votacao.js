@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:3000";
+const API_URL = "http://localhost:3001";
 
 // Função para formatar data e hora
 function formatarDataHora(dataHora) {
@@ -146,6 +146,35 @@ function limparFormulario() {
     document.getElementById("descricao_votacao").value = "";
     document.getElementById("data_inicio_votacao").value = "";
     document.getElementById("data_fim_votacao").value = "";
+}
+
+// Função para redirecionar para a tela de cadastro de opções de voto
+function redirecionarParaOpcoes(id_votacao) {
+    window.location.href = `../frontend/pages/cadastrar_opcoes.html?id_votacao=${id_votacao}`;
+}
+
+// Atualizar a listagem de votações para incluir o botão "Cadastrar Opções de Voto"
+async function carregarVotacoes() {
+    const response = await fetch(`${API_URL}/votacoes`);
+    const votacoes = await response.json();
+
+    const lista = document.getElementById("lista-votacoes");
+    lista.innerHTML = "";
+
+    votacoes.forEach(votacao => {
+        const item = document.createElement("li");
+        item.classList.add("list-group-item");
+        item.innerHTML = `
+            <strong>${votacao.nome_votacao}</strong> - ${votacao.descricao_votacao} 
+            <br> 📅 Início: ${formatarDataHora(votacao.data_inicio_votacao)}
+            <br> ⏳ Fim: ${formatarDataHora(votacao.data_fim_votacao)}
+            <br>
+            <button onclick="editarVotacao(${votacao.id_votacao})" class="btn btn-warning btn-sm">✏️ Editar</button>
+            <button onclick="deletarVotacao(${votacao.id_votacao})" class="btn btn-danger btn-sm">🗑️ Deletar</button>
+            <button onclick="redirecionarParaOpcoes(${votacao.id_votacao})" class="btn btn-info btn-sm">➕ Cadastrar Opções de Voto</button>
+        `;
+        lista.appendChild(item);
+    });
 }
 
 // Carregar votações ao carregar a página
