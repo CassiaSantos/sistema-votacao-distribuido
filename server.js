@@ -15,6 +15,8 @@ const opcoesRoutes = require('./src/routes/opcoes.routes.js');
 app.use('/opcoes', opcoesRoutes);
 const votosRoutes = require('./src/routes/votos.routes');
 app.use('/votos', votosRoutes);
+const authRoutes = require('./src/routes/auth.routes');
+app.use('/auth', authRoutes);
 
 // Iniciar servidor
 const PORT = process.env.PORT || 3001;

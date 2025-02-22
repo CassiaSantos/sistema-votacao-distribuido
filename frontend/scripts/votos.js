@@ -1,32 +1,52 @@
 const API_URL = "http://localhost:3001";
-
-// ID temporário do eleitor (enquanto não há login)
-const id_eleitor = 1; // ⚠ Aqui será o ID do eleitor autenticado no futuro!
-
-// Capturar ID da votação da URL
+const id_eleitor = localStorage.getItem("id_eleitor");
 const urlParams = new URLSearchParams(window.location.search);
 const id_votacao = urlParams.get("id_votacao");
+
 document.getElementById("id_votacao").value = id_votacao;
 
-// Função para carregar opções de voto
+// Função para carregar opções de voto da votação escolhida
 async function carregarOpcoes() {
-    const response = await fetch(`${API_URL}/opcoes/${id_votacao}`);
-    const opcoes = await response.json();
+    console.log("ID da votação recebida:", id_votacao); // Debug para ver se o ID está correto
 
-    const lista = document.getElementById("lista-opcoes");
-    lista.innerHTML = "";
+    if (!id_votacao) {
+        alert("Erro: Nenhuma votação foi selecionada!");
+        return;
+    }
 
-    opcoes.forEach(opcao => {
-        const item = document.createElement("li");
-        item.classList.add("list-group-item");
-        item.innerHTML = `
-            <input type="radio" name="opcao_voto" value="${opcao.id_opcao_voto}"> ${opcao.descricao_opcao_voto}
-        `;
-        lista.appendChild(item);
-    });
+    try {
+        const response = await fetch(`${API_URL}/opcoes/${id_votacao}`);
+        
+        if (!response.ok) {
+            throw new Error("Erro ao carregar opções de voto.");
+        }
+
+        const opcoes = await response.json();
+        console.log("Opções carregadas:", opcoes); // Debug para ver se a API retornou algo
+
+        const lista = document.getElementById("lista-opcoes");
+        lista.innerHTML = "";
+
+        if (opcoes.length === 0) {
+            lista.innerHTML = "<p>Não há opções de voto disponíveis para esta votação.</p>";
+            return;
+        }
+
+        opcoes.forEach(opcao => {
+            const item = document.createElement("li");
+            item.classList.add("list-group-item");
+            item.innerHTML = `
+                <input type="radio" name="opcao_voto" value="${opcao.id_opcao_voto}"> ${opcao.descricao_opcao_voto}
+            `;
+            lista.appendChild(item);
+        });
+    } catch (error) {
+        console.error("Erro ao carregar opções:", error);
+        alert("Erro ao carregar opções de voto.");
+    }
 }
 
-// Função para votar
+//funcao para votar
 async function votar() {
     const opcaoSelecionada = document.querySelector('input[name="opcao_voto"]:checked');
 
@@ -44,16 +64,18 @@ async function votar() {
             body: JSON.stringify({ id_votacao, id_opcao_voto, id_eleitor })
         });
 
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.error);
+        const result = await response.json();
+        
+        if (response.ok) {
+            alert("Voto registrado com sucesso!");
+            window.location.href = "obrigada_por_votar.html";
+        } else {
+            alert("Erro ao votar: " + result.error);
         }
-
-        alert("Voto registrado com sucesso!");
     } catch (error) {
-        alert("Erro ao votar: " + error.message);
+        alert("Erro ao conectar à API.");
     }
 }
 
-// Carregar opções ao abrir a página
+// Chamar a função ao carregar a página
 window.onload = carregarOpcoes;

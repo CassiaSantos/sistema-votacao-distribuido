@@ -16,12 +16,20 @@ exports.criarOpcao = async (req, res) => {
 exports.listarOpcoes = async (req, res) => {
     const { id_votacao } = req.params;
 
+    console.log("Buscando opções para a votação:", id_votacao); // Debug
+
     const { data, error } = await supabase
         .from('opcoes_voto')
         .select('*')
         .eq('id_votacao', id_votacao);
 
-    if (error) return res.status(400).json({ error: error.message });
+    if (error) {
+        console.error("Erro ao buscar opções de voto:", error);
+        return res.status(400).json({ error: error.message });
+    }
+
+    console.log("Opções encontradas:", data); // Debug
+
     res.json(data);
 };
 
