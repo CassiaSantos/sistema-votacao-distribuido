@@ -1,0 +1,29 @@
+:root{
+    --primary-color: hsla(158, 95%, 40%, 0.631);
+    --primary-color-hover: #20e99fd8;
+    --secondary-color: #1379ffde; 
+    --secondary-color-hover: #035cd1d7;
+    --background-white-color: #f4f4f4;
+    --text-color: #333;
+}
+
+.btn-primary, btn-success{
+    background-color: var(--primary-color);
+    border: none;
+}
+
+.btn-primary:hover{
+    background-color: var(--primary-color-hover);
+    border: none;
+}
+
+.btn-secondary{
+    background-color: var(--secondary-color);
+    border: none;
+}
+
+.btn-secondary:hover{
+    background-color: var(--secondary-color-hover);
+    border: none;
+    color: var(--primary-color);
+}

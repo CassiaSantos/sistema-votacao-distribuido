@@ -1,0 +1,53 @@
+/* :root{
+    --primary-color: #05c780a1;
+    --primary-color-hover: #20e99fd8;
+    --secondary-color: #1379ffde; 
+    --secondary-color-hover: #035cd1d7;
+    /* --background-color: #f4f4f4; 
+    --text-color: #333;
+} */
+
+body {
+    background: linear-gradient(to right, var(--secondary-color),  var(--primary-color));
+    color: white;
+    text-align: center;
+    font-family: Arial, sans-serif;
+}
+.container {
+    margin-top: 100px;
+}
+.logo {
+    width: 150px;
+    margin-bottom: 20px;
+}
+.card {
+    background: white;
+    color: var(--secondary-color);
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+}
+.btn-custom {
+    width: 100%;
+    font-size: 18px;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    text-transform: uppercase;
+    transition: 0.3s;
+}
+.btn-eleitor {
+    background-color: var(--secondary-color);
+    color: white;
+}
+.btn-eleitor:hover {
+    background-color: var(--secondary-color-hover);
+    color: var(--primary-color-hover);
+}
+.btn-admin {
+    background-color: var(--primary-color);
+    color: white;
+}
+.btn-admin:hover {
+    background-color: var(--primary-color-hover);
+}
