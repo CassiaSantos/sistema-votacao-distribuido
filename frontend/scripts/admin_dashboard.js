@@ -1,135 +1,56 @@
-async function carregarVotacoes() {
+async function carregarResultados() {
     try {
-        const response = await fetch("http://localhost:3001/resultado_votacao"); // Pegando os resultados
+        const response = await fetch("http://localhost:3001/resultado_votacao");
         const resultados = await response.json();
 
-        console.log(resultados); // Veja no console se os dados estão corretos
+        const container = document.getElementById("container-votacoes");
+        container.innerHTML = "";
 
-        const tabela = document.getElementById("tabela-votacoes");
-        tabela.innerHTML = "";
+        // Agrupar os resultados por votação
+        const votacoesMap = new Map();
 
         resultados.forEach(resultado => {
-            // Ajuste para capturar os novos campos corretamente
-            const idVotacao = resultado.id_votacao ?? 'Não informado';
-            const nomeVotacao = resultado.nome_votacao ?? 'Não informado';
-            const opcaoVoto = resultado.descricao_opcao_voto ?? 'Sem opção';
-            const totalVotos = resultado.total_votos ?? 0;
-
-            const linha = `<tr>
-                <td>${idVotacao}</td>
-                <td>${nomeVotacao}</td>
-                <td>${opcaoVoto} - ${totalVotos} votos</td>
-            </tr>`;
-            tabela.innerHTML += linha;
+            if (!votacoesMap.has(resultado.id_votacao)) {
+                votacoesMap.set(resultado.id_votacao, {
+                    nome: resultado.nome_votacao,
+                    opcoes: []
+                });
+            }
+            votacoesMap.get(resultado.id_votacao).opcoes.push({
+                descricao: resultado.descricao_opcao_voto || "Sem opção",
+                total: resultado.total_votos || 0
+            });
         });
+
+        // Criar uma tabela para cada votação
+        votacoesMap.forEach((dados, idVotacao) => {
+            const tabelaHTML = `
+                <div class="votacao-container">
+                    <h3>(ID: ${idVotacao}) - ${dados.nome}</h3>
+                    <table class="tabela-votacao">
+                        <thead>
+                            <tr>
+                                <th>Opção de Voto</th>
+                                <th>Total de Votos</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${dados.opcoes.map(opcao => `
+                                <tr>
+                                    <td>${opcao.descricao}</td>
+                                    <td>${opcao.total} votos</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            `;
+            container.innerHTML += tabelaHTML;
+        });
+
     } catch (error) {
-        console.error("Erro ao carregar resultados das votações:", error);
+        console.error("Erro ao carregar resultados:", error);
     }
 }
 
-document.addEventListener("DOMContentLoaded", carregarVotacoes);
-
-
-// async function carregarVotacoes() {
-//     try {
-//         const response = await fetch("http://localhost:3001/votacoes");
-//         const votacoes = await response.json();
-        
-//         const tabela = document.getElementById("tabela-votacoes");
-//         tabela.innerHTML = "";
-
-//         votacoes.forEach(votacao => {
-//             const linha = `<tr>
-//                 <td>${votacao.id_votacao}</td>
-//                 <td>${votacao.nome_votacao}</td>
-//                 <td>${votacao.total_votos || 'Aguardando resultado'}</td>
-//             </tr>`;
-//             tabela.innerHTML += linha;
-//             console.log(votacoes); // Para verificar o formato dos dados
-
-//         });
-//     } catch (error) {
-//         console.error("Erro ao carregar votações:", error);
-//     }
-// }
-
-// carregarVotacoes();
-
-// async function carregarVotacoes() {
-//     try {
-//         const response = await fetch("http://localhost:3001/resultado_votacao"); // Pegando os resultados
-//         const resultados = await response.json();
-        
-//         const tabela = document.getElementById("tabela-votacoes");
-//         tabela.innerHTML = "";
-
-//         resultados.forEach(resultado => {
-//             const linha = `<tr>
-//                 <td>${resultado.id_votacao}</td>
-//                 <td>${resultado.nome_votacao}</td>
-//                 <td>${resultado.descricao_opcao_voto} - ${resultado.total_votos} votos</td>
-//             </tr>`;
-//             tabela.innerHTML += linha;
-//         });
-//     } catch (error) {
-//         console.error("Erro ao carregar resultados das votações:", error);
-//     }
-// }
-
-// async function carregarVotacoes() {
-//     try {
-//         const response = await fetch("http://localhost:3001/resultado_votacao"); // Pegando os resultados
-//         const resultados = await response.json();
-
-//         console.log(resultados); // Adicione isso para ver os dados no console
-
-//         const tabela = document.getElementById("tabela-votacoes");
-//         tabela.innerHTML = "";
-
-//         resultados.forEach(resultado => {
-//             // Certifique-se de que os campos estão corretos
-//             const idVotacao = resultado.id_votacao ?? 'Não informado';
-//             const nomeVotacao = resultado.nome_votacao ?? 'Não informado';
-//             const opcaoVoto = resultado.descricao_opcao_voto ?? 'Sem opção';
-//             const totalVotos = resultado.total_votos ?? 0;
-
-//             const linha = `<tr>
-//                 <td>${idVotacao}</td>
-//                 <td>${nomeVotacao}</td>
-//                 <td>${opcaoVoto} - ${totalVotos} votos</td>
-//             </tr>`;
-//             tabela.innerHTML += linha;
-//         });
-//     } catch (error) {
-//         console.error("Erro ao carregar resultados das votações:", error);
-//     }
-// }
-
-document.addEventListener("DOMContentLoaded", carregarVotacoes);
-
-
-// document.addEventListener("DOMContentLoaded", carregarVotacoes);
-
-
-// document.addEventListener("DOMContentLoaded", async function () {
-//     try {
-//         const response = await fetch("http://localhost:3001/votacoes");
-//         const votacoes = await response.json();
-
-//         const tabela = document.getElementById("tabela-votacoes");
-//         tabela.innerHTML = ""; // Limpa a tabela antes de popular
-
-//         votacoes.forEach(votacao => {
-//             const row = `
-//                 <tr>
-//                     <td>${votacao.id || "N/A"}</td>
-//                     <td>${votacao.nome || "N/A"}</td>
-//                     <td>${votacao.resultado || "Aguardando resultado"}</td>
-//                 </tr>
-//             `;
-//             tabela.innerHTML += row;
-//         });
-//     } catch (error) {
-//         console.error("Erro ao carregar votações:", error);
-//     }
-// });
+carregarResultados();
