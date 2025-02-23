@@ -7,6 +7,7 @@ body {
 
 .container {
     margin-top: 100px;
+    height: 100%;
 }
 .card {
     background: white;
@@ -29,4 +30,16 @@ body {
 }
 .btn-custom:hover {
     background-color: var(--secondary-color-hover);
+}
+
+.btn-admin {
+    background-color: var(--primary-color);
+    color: white;
+}
+.btn-admin:hover {
+    background-color: var(--primary-color-hover);
+}
+
+.hover-blue:hover{
+    color: var(--primary-color-hover);
 }

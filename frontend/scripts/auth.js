@@ -2,27 +2,30 @@ const API_URL = "http://localhost:3001";
 
 function mostrarLogin() {
     document.getElementById("form-container").innerHTML = `
-        <h2>Login</h2>
-        <div class="mb-3">
-            <input type="text" id="nome_eleitor" class="form-control" placeholder="Nome Completo">
+        <div class="card">
+            <h2>Login</h2>
+            <div class="mb-3">
+                <input type="text" id="nome_eleitor" class="form-control" placeholder="Nome Completo">
+            </div>
+            <div class="mb-3">
+                <input type="email" id="email_eleitor" class="form-control" placeholder="E-mail">
+            </div>
+            <button class="btn btn-custom hover-blue" onclick="fazerLogin()">Entrar</button>
         </div>
-        <div class="mb-3">
-            <input type="email" id="email_eleitor" class="form-control" placeholder="E-mail">
-        </div>
-        <button class="btn btn-success" onclick="fazerLogin()">Entrar</button>
     `;
 }
 
 function mostrarCadastro() {
     document.getElementById("form-container").innerHTML = `
-        <h2>Cadastro</h2>
-        <div class="mb-3">
-            <input type="text" id="novo_nome" class="form-control" placeholder="Nome Completo">
-        </div>
-        <div class="mb-3">
-            <input type="email" id="novo_email" class="form-control" placeholder="E-mail">
-        </div>
-        <button class="btn btn-primary" onclick="cadastrarEleitor()">Cadastrar</button>
+        <div class="card">
+            <h2>Cadastro</h2>
+            <div class="mb-3">
+                <input type="text" id="novo_nome" class="form-control" placeholder="Nome Completo">
+            </div>
+            <div class="mb-3">
+                <input type="email" id="novo_email" class="form-control" placeholder="E-mail">
+            </div>
+        <button class="btn btn-custom hover-blue" onclick="cadastrarEleitor()">Cadastrar</button>
     `;
 }
 
