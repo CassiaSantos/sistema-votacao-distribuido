@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const opcoesController = require('../controllers/opcoes.controller');
+const opcoesController = require('../controllers/opcoes.controller.js');
 
 router.post('/', opcoesController.criarOpcao);
 router.get('/:id_votacao', opcoesController.listarOpcoes);
