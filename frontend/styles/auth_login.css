@@ -40,6 +40,6 @@ body {
     background-color: var(--primary-color-hover);
 }
 
-.hover-blue:hover{
+.hover-green:hover{
     color: var(--primary-color-hover);
 }

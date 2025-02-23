@@ -10,7 +10,7 @@ function mostrarLogin() {
             <div class="mb-3">
                 <input type="email" id="email_eleitor" class="form-control" placeholder="E-mail">
             </div>
-            <button class="btn btn-custom hover-blue" onclick="fazerLogin()">Entrar</button>
+            <button class="btn btn-custom hover-green" onclick="fazerLogin()">Entrar</button>
         </div>
     `;
 }
@@ -25,7 +25,7 @@ function mostrarCadastro() {
             <div class="mb-3">
                 <input type="email" id="novo_email" class="form-control" placeholder="E-mail">
             </div>
-        <button class="btn btn-custom hover-blue" onclick="cadastrarEleitor()">Cadastrar</button>
+        <button class="btn btn-custom hover-green" onclick="cadastrarEleitor()">Cadastrar</button>
     `;
 }
 
