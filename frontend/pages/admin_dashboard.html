@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/frontend/styles/root.css">
+    <link rel="stylesheet" href="/frontend/styles/admin_dashboard.css">
+    <title>Dashboard - Admin</title>
+</head>
+<body>
+    <header>
+        Dashboard do Administrador
+    </header>
+
+    <div class="container">
+        <h2>Votações e Resultados</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome da Votação</th>
+                    <th>Resultado</th>
+                </tr>
+            </thead>
+            <tbody id="tabela-votacoes">
+                <!-- As votações serão inseridas aqui via JavaScript -->
+            </tbody>
+        </table>
+    </div>
+
+    <script src="/frontend/scripts/admin_dashboard.js"></script>
+</body>
+</html>
