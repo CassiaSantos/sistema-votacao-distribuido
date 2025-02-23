@@ -17,6 +17,8 @@ const votosRoutes = require('./src/routes/votos.routes');
 app.use('/votos', votosRoutes);
 const authRoutes = require('./src/routes/auth.routes');
 app.use('/auth', authRoutes);
+const adminRoutes = require('./src/routes/admin.routes');
+app.use('/admin', adminRoutes);
 
 // Iniciar servidor
 const PORT = process.env.PORT || 3001;
