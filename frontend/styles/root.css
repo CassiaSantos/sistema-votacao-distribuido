@@ -32,3 +32,6 @@ body {
     border: none;
     color: var(--primary-color);
 }
+.view-height{
+    height: 100vh;
+}
