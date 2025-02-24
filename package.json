@@ -4,7 +4,8 @@
   "description": "API desenvolvida em Node.js com PostgreSQL no Supabase para criar e gerenciar votações.",
   "main": "api-votacao.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
   "author": "",
   "license": "ISC",
@@ -17,5 +18,13 @@
   "devDependencies": {
     "supabase": "^2.12.1"
   },
-  "keywords": []
+  "keywords": [],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CassiaSantos/sistema-votacao-distribuido.git"
+  },
+  "bugs": {
+    "url": "https://github.com/CassiaSantos/sistema-votacao-distribuido/issues"
+  },
+  "homepage": "https://github.com/CassiaSantos/sistema-votacao-distribuido#readme"
 }
