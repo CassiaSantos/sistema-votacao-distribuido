@@ -20,7 +20,7 @@ async function fazerLoginAdmin() {
         
         if (response.ok) {
             alert("Login bem-sucedido!");
-            window.location.href = "admin_options.html"; // Redireciona para a dashboard
+            window.location.href = "admin_options.html"; // Redireciona para página de opções;
         } else {
             alert("Erro no login: " + result.error);
         }
