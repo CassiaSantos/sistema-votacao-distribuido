@@ -5,9 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistema de Votação</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/frontend/styles/root.css">    
 </head>
-<body class="container py-4">
-    <h1 class="text-center">Sistema de Votação</h1>
+<body>
+    <div class="container py-4">
+        <h1 class="text-center">DecideAí - Sistema de Votação</h1>
     
     <section id="criar-votacao" class="mb-4">
         <h2 id="titulo-form">Criar Nova Votação</h2>
@@ -33,8 +35,12 @@
         <h2>Votações Disponíveis</h2>
         <ul id="lista-votacoes" class="list-group"></ul>
     </section>
+    </div>
+    
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/frontend/scripts/votacao_crud.js"></script>
+    <script src="/frontend/scripts/navbar.js"></script>
+    <script src="/frontend/scripts/footer.js"></script>
 </body>
 </html>
