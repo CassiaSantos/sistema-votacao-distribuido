@@ -3,6 +3,9 @@
 ## 📌 Sobre o Projeto  
 O **DecideAí - Sistema de Votação Distribuído** é uma aplicação desenvolvida em **Node.js, com Express** e **PostgreSQL (Supabase)** para gerenciar votações de maneira simples e eficiente. Ele permite o cadastro de eleitores, a criação de votações e a computação dos votos, além de fornecer um painel administrativo para gerenciar todo o processo.  
 
+#### Vídeo de execução do sistema
+Disponível em: https://drive.google.com/file/d/1ZPlJ44HsPWDJ0Ac_wbF-CNr72rILvzc_/view?usp=sharing
+
 ## 🧑‍💻 Autora  
 O projeto foi desenvolvido por **Cássia Santos**. Você pode encontrar mais informações e contribuições da autora no GitHub:  
 🔗 [GitHub - Cássia Santos](https://github.com/CassiaSantos)  
